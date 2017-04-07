@@ -37,7 +37,7 @@ function commerce_civicrm_rules_rules_action_info() {
       'list_civicrm_participant_id' => array('type' => 'list:integer', 'label' => t('List of Participant IDs')),
     ),
   );
-  foreach (commerce_rules_get_custom_civicrm_fields('contribution') as $fieldname => $field) {
+  foreach (commerce_civicrm_rules_get_custom_civicrm_fields('contribution') as $fieldname => $field) {
     $actions['commerce_civicrm_rules_create_contribution_by_line_item']['parameter'][$fieldname] = array(
        'type' => $field['type'], 'label' => $field['label'], 'optional' => TRUE, 'allow null' => TRUE,
     );
@@ -82,16 +82,22 @@ function commerce_civicrm_rules_rules_action_info() {
     )),
   );
 
+  $actions['commerce_civicrm_rules_create_contact_from_billing'] = array(
+
+  );
+
   return $actions;
 }
 
 /**
+ * Get custom CiviCRM fields.
+ *
  * @param string $entity
  * @param array $types
  *
  * @return
  */
-function commerce_rules_get_custom_fields($entity, $types = array('Integer' => 'integer', 'String' => 'text', 'Date' => 'date')) {
+function commerce_civicrm_rules_get_custom_civicrm_fields($entity, $types = array('Integer' => 'integer', 'String' => 'text', 'Date' => 'date')) {
   if (!civicrm_initialize()) {
     return array();
   }
