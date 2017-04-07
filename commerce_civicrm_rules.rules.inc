@@ -10,6 +10,7 @@
  * Implements hook_rules_action_info().
  */
 function commerce_civicrm_rules_rules_action_info() {
+  // Action: Create contributions for each line item.
   $default_financial_type = variable_get('commerce_civicrm_contribution_type', FALSE);
   $actions['commerce_civicrm_rules_create_contribution_by_line_item'] = array(
     'group' => t('Commerce CiviCRM Rules'),
@@ -36,11 +37,13 @@ function commerce_civicrm_rules_rules_action_info() {
       'list_civicrm_participant_id' => array('type' => 'list:integer', 'label' => t('List of Participant IDs')),
     ),
   );
-  foreach (commerce_rules_get_custom_fields('contribution') as $fieldname => $field) {
+  foreach (commerce_rules_get_custom_civicrm_fields('contribution') as $fieldname => $field) {
     $actions['commerce_civicrm_rules_create_contribution_by_line_item']['parameter'][$fieldname] = array(
        'type' => $field['type'], 'label' => $field['label'], 'optional' => TRUE, 'allow null' => TRUE,
     );
   }
+
+  // Action: Update status by line item.
   $actions['commerce_civicrm_rules_update_status_by_line_item'] = array(
     'group' => t('Commerce CiviCRM Rules'),
     'label' => t('Update contribution and related entities byLine item'),
@@ -50,7 +53,8 @@ function commerce_civicrm_rules_rules_action_info() {
       'commerce_line_item' => array('type' => 'commerce_line_item', 'label' => t('Line Item')),
     ),
   );
-  //not strictly a CiviCRM thing but the field is likely to hold a reference to a CiviCRM entity so useful
+
+  // Not strictly a CiviCRM thing but the field is likely to hold a reference to a CiviCRM entity so useful.
   $actions['commerce_civicrm_rules_calculate_request_quantity_with_field'] = array(
     'group' => t('Commerce CiviCRM Rules'),
     'label' => t('Calculate Requested Quantity in cart of products with field value'),
